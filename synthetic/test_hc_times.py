@@ -1,23 +1,9 @@
 import numpy as np
 
 np.random.seed(0)
-import pandas as pd
-import pathlib
-import glob
-import pybnesian as pbn
-from pybnesian import load
-import util
-from generate_new_bns import (
-    FixedDiscreteFactorType,
-    FixedCLGType,
-    NormalMixtureType,
-    FixedDiscreteFactor,
-    NormalMixtureCPD,
-    FixedCLG,
-    ProbabilisticModel,
-)
-from generate_dataset import preprocess_dataset
 import struct
+
+import util
 
 
 def compare_models(num_instances, bandwidth_selection="normal_reference"):
@@ -37,9 +23,11 @@ def compare_models(num_instances, bandwidth_selection="normal_reference"):
                 + "/HillClimbing/CLG/BIC_"
                 + str(p)
             )
-
-            with open(bic_folder + "/time", "rb") as f:
-                clg_bic[i] = struct.unpack("<d", f.read())[0]
+            try:
+                with open(bic_folder + "/time", "rb") as f:
+                    clg_bic[i] = struct.unpack("<d", f.read())[0]
+            except FileNotFoundError:
+                clg_bic[i] = None
 
             clg_vl_folder = (
                 "models/"
@@ -49,9 +37,11 @@ def compare_models(num_instances, bandwidth_selection="normal_reference"):
                 + "/HillClimbing/CLG/ValidationLikelihood_"
                 + str(p)
             )
-
-            with open(clg_vl_folder + "/time", "rb") as f:
-                clg_vl[i] = struct.unpack("<d", f.read())[0]
+            try:
+                with open(clg_vl_folder + "/time", "rb") as f:
+                    clg_vl[i] = struct.unpack("<d", f.read())[0]
+            except FileNotFoundError:
+                clg_vl[i] = None
 
             hspbn_clg_folder = (
                 "models/"
@@ -61,9 +51,11 @@ def compare_models(num_instances, bandwidth_selection="normal_reference"):
                 + "/HillClimbing/HSPBN/"
                 + str(p)
             )
-
-            with open(hspbn_clg_folder + "/time", "rb") as f:
-                hspbn_clg_vl[i] = struct.unpack("<d", f.read())[0]
+            try:
+                with open(hspbn_clg_folder + "/time", "rb") as f:
+                    hspbn_clg_vl[i] = struct.unpack("<d", f.read())[0]
+            except FileNotFoundError:
+                hspbn_clg_vl[i] = None
 
             hspbn_hckde_folder = (
                 "models/"
@@ -74,8 +66,11 @@ def compare_models(num_instances, bandwidth_selection="normal_reference"):
                 + str(p)
             )
 
-            with open(hspbn_hckde_folder + "/time", "rb") as f:
-                hspbn_hckde_vl[i] = struct.unpack("<d", f.read())[0]
+            try:
+                with open(hspbn_hckde_folder + "/time", "rb") as f:
+                    hspbn_hckde_vl[i] = struct.unpack("<d", f.read())[0]
+            except FileNotFoundError:
+                hspbn_hckde_vl[i] = None
 
         print("BIC p = " + str(p) + ": " + str(clg_bic.mean()))
         print("CLG-VL p = " + str(p) + ": " + str(clg_vl.mean()))
