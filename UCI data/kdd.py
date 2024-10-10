@@ -44,7 +44,7 @@ def preprocess_dataframe(df):
 
     for c in cat_columns:
         df[c] = df[c].astype("category")
-        df[c].cat.categories = df[c].cat.categories.astype("string")
+        df[c] = df[c].cat.rename_categories(df[c].cat.categories.astype("string"))
 
     for c in cont_columns:
         df[c] = df[c].astype("double")
