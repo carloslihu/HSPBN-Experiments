@@ -2,9 +2,25 @@ This repository contains the experiments for "Hybrid Semiparametric Bayesian Net
 
 There is a folder for each experiment type. `synthetic` for synthetic data experiments, and `UCI data` for experiments from the UCI repository.
 
-To run these experiments [`PyBNesian`](https://github.com/davenza/PyBNesian) is needed. The experiments were run on a modified v0.4.0 version. The patch applied to PyBnesian v0.4.0 is in `pybnesian_patch/hspbn_experiments.patch`. This patch includes the implementation of BDeu for discrete factors. Also, the patch controls the existence of discrete configurations that are in the test data, but not in the training data. We also provide compiled wheels in the folder `pybnesian_patch` for several Python and operatoring system versions.
+Prerequisites
+=================
 
-The experiments were run on Ubuntu 16.04, Python 3.7.3, and compiled with gcc 9.3.0. We believe that the results should be reproducible for most configurations. Altough sometimes C++ compilers introduce optimizations and changes in the standard library implementation in new releases. These changes may subtly affect the results.
+<!-- TODO: UPDATE -->
+The experiments were run on:
+- Ubuntu 16.04
+- Python 3.7.3
+- Compiled with gcc 9.3.0. 
+
+We believe that the results should be reproducible for most configurations. Altough sometimes C++ compilers introduce optimizations and changes in the standard library implementation in new releases. These changes may subtly affect the results.
+
+To run these experiments, the following libraries have to be installed:
+- [`PyBNesian`](https://github.com/davenza/PyBNesian) is needed. 
+The experiments were run on the modified v0.5.1 version. The patch applied to PyBnesian v0.5.1 is in `pybnesian_patch/hspbn_experiments.patch`. This patch includes the implementation of BDeu for discrete factors. Also, the patch controls the existence of discrete configurations that are in the test data, but not in the training data. We also provide compiled wheels in the folder `pybnesian_patch` for several Python and operating system versions.
+- R and the `ks` package for R are needed.
+`sudo apt-get install r-base`
+`install.packages("ks")`
+- rpy2
+`pip install rpy2`
 
 Organization
 =================
@@ -25,7 +41,7 @@ The synthetic experiments contain the following files:
 
 `generate_new_bns.py` generates random Bayesian networks and includes auxiliary classes and methods. This is the first script that should be called. It saves the models in a local folder called `ground_truth_models/` (ensure the folder exists).
 
-`generate_dataset.py` generates all training and test datasets from the random Bayesian networks. You should execute `python generate_dataset_hspbn.py` after `python generate_new_bns.py`. It saves the datasets in a local folder called `data/` (ensure the folder exists).
+`generate_dataset.py` generates all training and test datasets from the random Bayesian networks. You should execute `python generate_dataset.py` after `python generate_new_bns.py`. It saves the datasets in a local folder called `data/` (ensure the folder exists).
 
 The experiments are executed in two steps so the experiments can be paused/resumed easily. First, the models are learned from the training data and saved. For this, use the scripts `train_hc_[model_type].py`. This step can take quite some time, so the execution can be stopped at any moment for all training scripts. If the script is executed again, it will automatically detect the already learned models. All the learned models are saved in a local folder called `models/`. All the learned models (including all the iterations of the greedy hill-climbing algorithm) are saved.
 
