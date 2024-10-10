@@ -5,22 +5,25 @@ There is a folder for each experiment type. `synthetic` for synthetic data exper
 Prerequisites
 =================
 
-<!-- TODO: UPDATE -->
 The experiments were run on:
-- Ubuntu 16.04
-- Python 3.7.3
-- Compiled with gcc 9.3.0. 
+- Ubuntu 24.04.1 LTS
+- Python 3.12
+- Compiled with gcc 11.4.0
 
 We believe that the results should be reproducible for most configurations. Altough sometimes C++ compilers introduce optimizations and changes in the standard library implementation in new releases. These changes may subtly affect the results.
 
 To run these experiments, the following libraries have to be installed:
 - [`PyBNesian`](https://github.com/davenza/PyBNesian) is needed. 
 The experiments were run on the modified v0.5.1 version. The patch applied to PyBnesian v0.5.1 is in `pybnesian_patch/hspbn_experiments.patch`. This patch includes the implementation of BDeu for discrete factors. Also, the patch controls the existence of discrete configurations that are in the test data, but not in the training data. We also provide compiled wheels in the folder `pybnesian_patch` for several Python and operating system versions.
-- R and the `ks` package for R are needed.
+- `R` and the `ks` package for R are needed.
 `sudo apt-get install r-base`
+`R`
 `install.packages("ks")`
-- rpy2
-`pip install rpy2`
+- Python libraries
+`pip install rpy2 tikzplotlib`
+
+tikzplotlib must be edited to avoid an ImportError.
+https://stackoverflow.com/a/79027395
 
 Organization
 =================
@@ -70,6 +73,6 @@ The UCI data experiments contain the following files:
 
 Each dataset also has a corresponding Python file. Calling one of this files, trains all the models for this dataset. As in the synthetic experiments, it saves all the models in the local folder `models/`. Then, it evaluates the performance of all models on unseen data and prints the results on the screen.
 
-`plot_results.py` saves a `result_summary.csv` file which contains the results for each dataset and algorithm. Then, it plots the CD diagram comparing all the algorithms in a local folder called `plots/`. **You can call this file after training all the models for all the datasets**. That is, you must execute all the dataset scripts before calling `plot_results.py`
+`plot_results.py` saves a `data/result_summary.csv` file which contains the results for each dataset and algorithm. Then, it plots the CD diagram comparing all the algorithms in a local folder called `plots/`. **You can call this file after training all the models for all the datasets**. That is, you must execute all the dataset scripts before calling `plot_results.py`
 
 `adjusted_pvalues.py` and `plot_cd_diagram.py` is auxiliary code for `plot_results.py`. They perform multiple hypothesis tests and plot CD diagrams.
