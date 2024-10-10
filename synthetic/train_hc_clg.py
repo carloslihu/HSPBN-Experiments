@@ -2,9 +2,9 @@ import glob
 import math
 import multiprocessing as mp
 import os
-import pathlib
 import struct
 import time
+from pathlib import Path
 
 import generate_dataset
 import pandas as pd
@@ -35,7 +35,7 @@ def run_hc_hspbn(idx_dataset, i):
             + "/HillClimbing/CLG/BIC_"
             + str(p)
         )
-        pathlib.Path(result_folder).mkdir(parents=True, exist_ok=True)
+        Path(result_folder).mkdir(parents=True, exist_ok=True)
 
         if not os.path.exists(result_folder + "/end.lock"):
             cb_save = pbn.SaveModel(result_folder)
@@ -64,7 +64,7 @@ def run_hc_hspbn(idx_dataset, i):
             + "/HillClimbing/CLG/ValidationLikelihood_"
             + str(p)
         )
-        pathlib.Path(result_folder).mkdir(parents=True, exist_ok=True)
+        Path(result_folder).mkdir(parents=True, exist_ok=True)
 
         if not os.path.exists(result_folder + "/end.lock"):
             cb_save = pbn.SaveModel(result_folder)

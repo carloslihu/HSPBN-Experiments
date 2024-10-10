@@ -2,7 +2,7 @@ import numpy as np
 
 np.random.seed(0)
 import glob
-import pathlib
+from pathlib import Path
 
 import pandas as pd
 import util
@@ -55,7 +55,7 @@ def compare_models(num_instances):
                 + "/HillClimbing/CLG/BIC_"
                 + str(p)
             )
-            pathlib.Path(result_folder).mkdir(parents=True, exist_ok=True)
+            Path(result_folder).mkdir(parents=True, exist_ok=True)
 
             all_models = sorted(glob.glob(result_folder + "/*.pickle"))
             final_model = load(all_models[-1])
@@ -73,7 +73,7 @@ def compare_models(num_instances):
                 + "/HillClimbing/CLG/ValidationLikelihood_"
                 + str(p)
             )
-            pathlib.Path(result_folder).mkdir(parents=True, exist_ok=True)
+            Path(result_folder).mkdir(parents=True, exist_ok=True)
 
             all_models = sorted(glob.glob(result_folder + "/*.pickle"))
             final_model = load(all_models[-1])

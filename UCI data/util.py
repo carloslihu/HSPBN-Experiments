@@ -1,11 +1,12 @@
 import glob
 import multiprocessing as mp
 import os
-import pathlib
+from pathlib import Path
 
 import numpy as np
-import pybnesian as pbn
 from sklearn.model_selection import KFold
+
+import pybnesian as pbn
 
 SEED = 0
 EVALUATION_FOLDS = 10
@@ -230,7 +231,7 @@ def train_hc_clg_bic(df_name, train_df, patience, idx_fold):
         + "/"
         + str(idx_fold)
     )
-    pathlib.Path(fold_folder).mkdir(parents=True, exist_ok=True)
+    Path(fold_folder).mkdir(parents=True, exist_ok=True)
 
     if os.path.exists(fold_folder + "/end.lock"):
         return
@@ -261,7 +262,7 @@ def train_hc_clg_vl(df_name, train_df, test_df, patience, idx_fold):
         + "/"
         + str(idx_fold)
     )
-    pathlib.Path(fold_folder).mkdir(parents=True, exist_ok=True)
+    Path(fold_folder).mkdir(parents=True, exist_ok=True)
 
     if os.path.exists(fold_folder + "/end.lock"):
         return
@@ -293,7 +294,7 @@ def train_hc_hspbn_clg(df_name, train_df, test_df, patience, idx_fold):
         + "/"
         + str(idx_fold)
     )
-    pathlib.Path(fold_folder).mkdir(parents=True, exist_ok=True)
+    Path(fold_folder).mkdir(parents=True, exist_ok=True)
 
     if os.path.exists(fold_folder + "/end.lock"):
         return
@@ -325,7 +326,7 @@ def train_hc_hspbn_hckde(df_name, train_df, test_df, patience, idx_fold):
         + "/"
         + str(idx_fold)
     )
-    pathlib.Path(fold_folder).mkdir(parents=True, exist_ok=True)
+    Path(fold_folder).mkdir(parents=True, exist_ok=True)
 
     if os.path.exists(fold_folder + "/end.lock"):
         return

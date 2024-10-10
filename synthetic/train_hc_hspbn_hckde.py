@@ -2,9 +2,9 @@ import glob
 import math
 import multiprocessing as mp
 import os
-import pathlib
 import struct
 import time
+from pathlib import Path
 
 import generate_dataset
 import pandas as pd
@@ -34,7 +34,7 @@ def run_hc_hspbn_hckde(idx_dataset, i):
             + "/HillClimbing/HSPBN_HCKDE/"
             + str(p)
         )
-        pathlib.Path(result_folder).mkdir(parents=True, exist_ok=True)
+        Path(result_folder).mkdir(parents=True, exist_ok=True)
 
         if os.path.exists(result_folder + "/end.lock"):
             continue
