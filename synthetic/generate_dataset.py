@@ -2,7 +2,15 @@ from pathlib import Path
 
 import pandas as pd
 import util
-from generate_new_bns import ProbabilisticModel
+from generate_new_bns import (
+    FixedCLG,
+    FixedCLGType,
+    FixedDiscreteFactor,
+    FixedDiscreteFactorType,
+    NormalMixtureCPD,
+    NormalMixtureType,
+    ProbabilisticModel,
+)
 
 
 def preprocess_dataset(df: pd.DataFrame) -> pd.DataFrame:
@@ -26,9 +34,7 @@ if __name__ == "__main__":
     data_path = Path("data")
     data_path.mkdir(parents=True, exist_ok=True)
     for i in range(util.NUM_SIMULATIONS):
-        model = ProbabilisticModel.load(
-            ground_truth_models_path / f"model_{str(i)}.pickle"
-        )
+        model = ProbabilisticModel.load(ground_truth_models_path / f"model_{i}.pickle")
 
         dataset200 = model.ground_truth_bn.sample(
             200, seed=i * 100, ordered=True

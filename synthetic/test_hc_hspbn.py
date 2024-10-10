@@ -8,7 +8,15 @@ import pandas as pd
 import rpy2
 import util
 from generate_dataset import preprocess_dataset
-from generate_new_bns import ProbabilisticModel
+from generate_new_bns import (
+    FixedCLG,
+    FixedCLGType,
+    FixedDiscreteFactor,
+    FixedDiscreteFactorType,
+    NormalMixtureCPD,
+    NormalMixtureType,
+    ProbabilisticModel,
+)
 from rpy2.robjects import numpy2ri
 from rpy2.robjects.packages import importr
 
