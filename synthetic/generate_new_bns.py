@@ -5,10 +5,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import pyarrow as pa
+import pybnesian as pbn
 import scipy.special
 import util
-
-import pybnesian as pbn
 
 PROB_DISCRETE_DISCRETE = 0.25
 PROB_DISCRETE_CONTINUOUS = 0.25
@@ -456,7 +455,6 @@ class NormalMixtureCPD(pbn.Factor):
 
 
 class ProbabilisticModel:
-
     discrete_nodes = ["A", "B", "C", "E"]
     discrete_categories = {
         "A": ["a" + str(i) for i in range(1, 3)],
@@ -471,7 +469,30 @@ class ProbabilisticModel:
         self.ground_truth_bn = ground_truth_bn
 
     @classmethod
-    def generate_structure(cls, seed=0):
+    def generate_structure(cls, seed: int = 0) -> pbn.SemiparametricBN:
+        """
+        Generates a semiparametric Bayesian network structure with a mix of discrete and continuous nodes.
+
+        Args:
+            seed (int, optional): Seed for the random number generator. Defaults to 0.
+
+        Returns:
+            pbn.SemiparametricBN: A semiparametric Bayesian network with the generated structure.
+
+        The function performs the following steps:
+        1. Sets the random seed for reproducibility.
+        2. Retrieves the discrete and continuous nodes from the ProbabilisticModel.
+        3. Randomly assigns types to the continuous nodes.
+        4. Initializes a semiparametric Bayesian network with the specified nodes and types.
+        5. Generates arcs between discrete nodes based on a predefined probability.
+        6. Generates arcs between discrete and continuous nodes based on a predefined probability.
+        7. Generates arcs between continuous nodes based on a predefined probability.
+        8. Adds the generated arcs to the Bayesian network.
+
+        Note:
+            The probabilities for generating arcs between nodes are defined by the constants
+            PROB_DISCRETE_DISCRETE, PROB_DISCRETE_CONTINUOUS, and PROB_CONTINUOUS_CONTINUOUS.
+        """
         np.random.seed(seed)
         discrete_nodes = ProbabilisticModel.discrete_nodes
         continuous_nodes = ProbabilisticModel.continuous_nodes
@@ -573,6 +594,22 @@ class ProbabilisticModel:
 
     @classmethod
     def generate_parameters(cls, structure, seed=0):
+        """
+        Generates parameters for a given Bayesian network structure.
+
+        This method initializes the random seed, sets up default factor types, and creates a
+        Heterogeneous Bayesian Network (HBN) with the specified structure. It then generates
+        Conditional Probability Distributions (CPDs) for each node in the structure based on
+        their type and adds them to the HBN.
+
+        Args:
+            cls: The class instance (typically not used in the method).
+            structure: The structure of the Bayesian network, which includes nodes and their types.
+            seed (int, optional): The seed for the random number generator. Defaults to 0.
+
+        Returns:
+            HeterogeneousBN: A Bayesian network with the generated parameters.
+        """
         np.random.seed(seed)
         default_factor_type = {
             pa.float64(): [FixedCLGType(), NormalMixtureType()],
@@ -601,7 +638,21 @@ class ProbabilisticModel:
         return ground_truth
 
     @classmethod
-    def generate_new_model(cls, seed=0):
+    def generate_new_model(cls, seed: int = 0) -> "ProbabilisticModel":
+        """
+        Generates a new probabilistic model with a specified seed.
+
+        This method generates a new Bayesian network model by first creating the
+        structure of the network and then generating the parameters for the network
+        based on the given seed.
+
+        Args:
+            seed (int, optional): The seed for random number generation. Defaults to 0.
+
+        Returns:
+            ProbabilisticModel: A new instance of ProbabilisticModel with the generated
+            structure and parameters.
+        """
         expected_bn = ProbabilisticModel.generate_structure(seed=seed)
         ground_truth_bn = ProbabilisticModel.generate_parameters(
             expected_bn, seed=seed + 2000
