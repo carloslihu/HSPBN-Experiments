@@ -1,14 +1,16 @@
-import os
 import glob
-import pandas as pd
-import util
-import generate_dataset
-import pybnesian as pbn
-import pathlib
 import math
 import multiprocessing as mp
-import time
+import os
+import pathlib
 import struct
+import time
+
+import generate_dataset
+import pandas as pd
+import util
+
+import pybnesian as pbn
 
 patience = util.PATIENCE
 

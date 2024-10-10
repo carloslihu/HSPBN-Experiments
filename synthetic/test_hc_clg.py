@@ -1,21 +1,16 @@
 import numpy as np
 
 np.random.seed(0)
-import pandas as pd
-import pathlib
 import glob
-from pybnesian import load
+import pathlib
+
+import pandas as pd
 import util
-from generate_new_bns import (
-    FixedDiscreteFactorType,
-    FixedCLGType,
-    NormalMixtureType,
-    FixedDiscreteFactor,
-    NormalMixtureCPD,
-    FixedCLG,
-    ProbabilisticModel,
-)
 from generate_dataset import preprocess_dataset
+from generate_new_bns import ProbabilisticModel
+)
+
+from pybnesian import load
 
 
 def compare_models(num_instances):

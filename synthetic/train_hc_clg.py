@@ -1,14 +1,16 @@
-import os
 import glob
-import pandas as pd
-import util
-import generate_dataset
-import pybnesian as pbn
-import pathlib
 import math
 import multiprocessing as mp
-import time
+import os
+import pathlib
 import struct
+import time
+
+import generate_dataset
+import pandas as pd
+import util
+
+import pybnesian as pbn
 
 patience = util.PATIENCE
 
@@ -83,20 +85,21 @@ def run_hc_hspbn(idx_dataset, i):
                 pass
 
 
-for i in util.INSTANCES:
-    for idx_dataset in range(
-        0, math.ceil(util.NUM_SIMULATIONS / util.PARALLEL_THREADS)
-    ):
+if __name__ == "__main__":
+    for i in util.INSTANCES:
+        for idx_dataset in range(
+            0, math.ceil(util.NUM_SIMULATIONS / util.PARALLEL_THREADS)
+        ):
 
-        num_processes = min(
-            util.PARALLEL_THREADS,
-            util.NUM_SIMULATIONS - idx_dataset * util.PARALLEL_THREADS,
-        )
-        with mp.Pool(processes=num_processes) as p:
-            p.starmap(
-                run_hc_hspbn,
-                [
-                    (util.PARALLEL_THREADS * idx_dataset + ii, i)
-                    for ii in range(num_processes)
-                ],
+            num_processes = min(
+                util.PARALLEL_THREADS,
+                util.NUM_SIMULATIONS - idx_dataset * util.PARALLEL_THREADS,
             )
+            with mp.Pool(processes=num_processes) as p:
+                p.starmap(
+                    run_hc_hspbn,
+                    [
+                        (util.PARALLEL_THREADS * idx_dataset + ii, i)
+                        for ii in range(num_processes)
+                    ],
+                )

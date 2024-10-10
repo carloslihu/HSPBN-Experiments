@@ -1,6 +1,7 @@
 import math
-import numpy as np
+
 import adjusted_pvalues
+import numpy as np
 
 
 # From Orange 3: https://docs.biolab.si//3/data-mining-library/_modules/Orange/evaluation/scoring.html#compute_CD

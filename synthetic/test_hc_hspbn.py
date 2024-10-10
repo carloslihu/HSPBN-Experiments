@@ -1,27 +1,19 @@
 import numpy as np
 
 np.random.seed(0)
-import pandas as pd
-import pathlib
 import glob
+import pathlib
+
+import pandas as pd
+import rpy2
+import util
+from generate_dataset import preprocess_dataset
+from generate_new_bns import ProbabilisticModel
+from rpy2.robjects import numpy2ri
+from rpy2.robjects.packages import importr
+
 import pybnesian as pbn
 from pybnesian import load
-import util
-from generate_new_bns import (
-    FixedDiscreteFactorType,
-    FixedCLGType,
-    NormalMixtureType,
-    FixedDiscreteFactor,
-    NormalMixtureCPD,
-    FixedCLG,
-    ProbabilisticModel,
-)
-from generate_dataset import preprocess_dataset
-
-import rpy2
-from rpy2.robjects.packages import importr
-from rpy2 import robjects
-from rpy2.robjects import numpy2ri
 
 numpy2ri.activate()
 

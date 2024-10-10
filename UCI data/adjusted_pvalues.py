@@ -1,8 +1,9 @@
 import math
-from scipy.stats import norm
-from itertools import chain, combinations
-import numpy as np
 import sys
+from itertools import chain, combinations
+
+import numpy as np
+from scipy.stats import norm
 
 
 def non_empty_powerset(iterable):

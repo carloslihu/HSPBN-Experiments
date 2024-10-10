@@ -1,10 +1,11 @@
+import glob
+import multiprocessing as mp
+import os
+import pathlib
+
 import numpy as np
 import pybnesian as pbn
-import os
 from sklearn.model_selection import KFold
-import multiprocessing as mp
-import pathlib
-import glob
 
 SEED = 0
 EVALUATION_FOLDS = 10
@@ -12,9 +13,8 @@ PARALLEL_THREADS = 10
 PATIENCE = [0, 5, 15]
 
 import rpy2
-from rpy2.robjects.packages import importr
-from rpy2 import robjects
 from rpy2.robjects import numpy2ri
+from rpy2.robjects.packages import importr
 
 numpy2ri.activate()
 

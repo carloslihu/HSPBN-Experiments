@@ -1,17 +1,16 @@
-import numpy as np
-import pandas as pd
-import plot_cd_diagram
-
-import tikzplotlib
-import util
 import adult
 import australian_statlog
 import cover_type
 import german_statlog
 import kdd
 import liver_disorders
+import numpy as np
+import pandas as pd
+import plot_cd_diagram
 import thyroid_hypothyroid
 import thyroid_sick
+import tikzplotlib
+import util
 
 
 def result_string(df_name, df):
