@@ -530,6 +530,20 @@ def unfold_predictions(results):
 
 
 def test_hc_models(df_name, df):
+    """
+    Evaluates various hierarchical clustering models on a given dataset using cross-validation.
+
+    Parameters:
+    df_name (str): The name of the dataframe.
+    df (pandas.DataFrame): The dataframe containing the data to be evaluated.
+
+    Returns:
+    tuple: A tuple containing the evaluation results for the following models:
+        - bic_result: List of BIC evaluation results for different patience values.
+        - clg_vl_result: List of CLG validation results for different patience values.
+        - hspbn_vl_result: List of HSPBN validation results for different patience values.
+        - hspbn_hckde_vl_result: List of HSPBN-HCKDE validation results for different patience values.
+    """
     chunks = int(np.ceil(EVALUATION_FOLDS / PARALLEL_THREADS))
 
     fold_indices = list(

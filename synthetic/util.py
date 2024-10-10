@@ -29,6 +29,22 @@ def shd(estimated, true):
 
 
 def hamming(estimated, true):
+    """
+    Calculate the Hamming distance between two directed graphs.
+
+    The Hamming distance is defined as the number of arcs that are present in one graph but not the other,
+    considering both directions of the arcs.
+
+    Parameters:
+    estimated (networkx.DiGraph): The estimated directed graph.
+    true (networkx.DiGraph): The true directed graph.
+
+    Returns:
+    int: The Hamming distance between the estimated and true graphs.
+
+    Raises:
+    AssertionError: If the set of nodes in the estimated graph does not match the set of nodes in the true graph.
+    """
     assert set(estimated.nodes()) == set(true.nodes())
     hamming_value = 0
 
