@@ -4,7 +4,6 @@ import cover_type
 import german_statlog
 import kdd
 import liver_disorders
-import numpy as np
 import pandas as pd
 import plot_cd_diagram
 import thyroid_hypothyroid
@@ -124,7 +123,7 @@ def plot_cd_diagrams(rename_dict):
         avgranks,
         names,
         df_algorithms.shape[0],
-        textspace=1.1,
+        textspace=1,
         posthoc_method="bergmann",
     )
     tikzplotlib.save(

@@ -8,7 +8,6 @@ import pandas as pd
 import util
 from generate_dataset import preprocess_dataset
 from generate_new_bns import ProbabilisticModel
-)
 
 from pybnesian import load
 
