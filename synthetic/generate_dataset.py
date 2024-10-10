@@ -1,10 +1,20 @@
 from pathlib import Path
 
+import pandas as pd
 import util
 from generate_new_bns import ProbabilisticModel
 
 
-def preprocess_dataset(df):
+def preprocess_dataset(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Preprocesses the given DataFrame by converting specified columns to categorical data types and renaming their categories.
+
+    Parameters:
+    df (pandas.DataFrame): The input DataFrame to preprocess.
+
+    Returns:
+    pandas.DataFrame: The preprocessed DataFrame with specified columns converted to categorical types and their categories renamed to strings.
+    """
     for c in ["A", "B", "C", "E"]:
         df[c] = df[c].astype("category")
         df[c] = df[c].cat.rename_categories(df[c].cat.categories.astype("string"))

@@ -13,6 +13,19 @@ from pybnesian import load
 
 
 def compare_models(num_instances):
+    """
+    Compares probabilistic models using different scoring methods and prints the results.
+
+    This function evaluates models trained with different scoring methods (BIC and Validation Likelihood)
+    on synthetic datasets. It computes and prints the log-likelihood, Structural Hamming Distance (SHD),
+    and Hamming distance for each model.
+
+    Parameters:
+    num_instances (int): The number of instances in the training dataset.
+
+    Returns:
+    None
+    """
     truth_ll = np.empty((util.NUM_SIMULATIONS,))
 
     ll_bic = np.empty((util.NUM_SIMULATIONS,))

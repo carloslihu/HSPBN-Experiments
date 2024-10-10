@@ -6,7 +6,24 @@ import struct
 import util
 
 
-def compare_models(num_instances, bandwidth_selection="normal_reference"):
+def compare_models(num_instances):
+    """
+    Compare different models based on their computation times.
+
+    This function reads computation times from files for different models and prints the mean times for each model.
+    The models compared are:
+    - CLG with BIC
+    - CLG with Validation Likelihood
+    - HSPBN with CLG
+    - HSPBN with HCKDE
+
+    Parameters:
+    num_instances (int): The number of instances used in the experiments.
+    bandwidth_selection (str): The bandwidth selection method used. Default is "normal_reference".
+
+    Returns:
+    None
+    """
     clg_bic = np.empty((util.NUM_SIMULATIONS,))
     clg_vl = np.empty((util.NUM_SIMULATIONS,))
     hspbn_clg_vl = np.empty((util.NUM_SIMULATIONS,))

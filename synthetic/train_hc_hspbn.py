@@ -16,6 +16,25 @@ patience = util.PATIENCE
 
 
 def run_hc_hspbn(idx_dataset, i):
+    """
+    Runs the Hill Climbing algorithm for Hybrid Semiparametric Bayesian Networks (HSPBN) on a specified dataset.
+
+    Args:
+        idx_dataset (int): Index of the dataset to be used.
+        i (int): Identifier for the specific run or instance of the dataset.
+
+    Description:
+        This function performs the following steps:
+        1. Initializes the Greedy Hill Climbing algorithm and the operator pool.
+        2. Reads and preprocesses the dataset.
+        3. Sets up the validated likelihood with k-fold cross-validation.
+        4. Iterates over different patience values to perform model estimation.
+        5. Saves the resulting model and execution time.
+        6. Ensures that the process can be resumed by checking for an end lock file.
+
+    Note:
+        The function assumes the existence of certain directories and files, and it creates necessary directories if they do not exist.
+    """
     hc = pbn.GreedyHillClimbing()
     pool = pbn.OperatorPool([pbn.ArcOperatorSet(), pbn.ChangeNodeTypeSet()])
 

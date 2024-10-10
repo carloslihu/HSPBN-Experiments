@@ -16,6 +16,31 @@ patience = util.PATIENCE
 
 
 def run_hc_hspbn(idx_dataset, i):
+    """
+    Executes the Hill Climbing algorithm for Hybrid Structure Probabilistic Bayesian Networks (HSPBN) on a given dataset.
+
+    Parameters:
+    idx_dataset (int): Index of the dataset to be used.
+    i (int): Iteration number for the dataset.
+
+    The function performs the following steps:
+    1. Reads the dataset from a CSV file.
+    2. Preprocesses the dataset.
+    3. Initializes the BIC and Validated Likelihood scoring methods.
+    4. For each patience value:
+        a. Creates a result folder for storing models and results.
+        b. If the end.lock file does not exist in the result folder:
+            i. Initializes a CLGNetwork model.
+            ii. Estimates the Bayesian Network using the Greedy Hill Climbing algorithm with BIC scoring.
+            iii. Saves the model and the time taken for estimation.
+            iv. Creates an end.lock file to indicate completion.
+        c. Creates a result folder for storing models and results for Validated Likelihood scoring.
+        d. If the end.lock file does not exist in the result folder:
+            i. Initializes a CLGNetwork model.
+            ii. Estimates the Bayesian Network using the Greedy Hill Climbing algorithm with Validated Likelihood scoring.
+            iii. Saves the model and the time taken for estimation.
+            iv. Creates an end.lock file to indicate completion.
+    """
     hc = pbn.GreedyHillClimbing()
     pool = pbn.OperatorPool([pbn.ArcOperatorSet(), pbn.ChangeNodeTypeSet()])
 

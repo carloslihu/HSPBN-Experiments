@@ -53,6 +53,28 @@ class PluginEstimator(pbn.BandwidthSelector):
 
 
 def compare_models(num_instances, bandwidth_selection="normal_reference"):
+    """
+    Compare probabilistic models using various metrics.
+
+    Parameters:
+    num_instances (int): The number of instances to use for training the models.
+    bandwidth_selection (str): The method for bandwidth selection. Possible options are:
+                               "normal_reference", "ucv", and "plugin". Default is "normal_reference".
+
+    This function performs the following steps:
+    1. Loads the ground truth models and computes their log-likelihood on the test datasets.
+    2. For each patience value in `util.PATIENCE`, it:
+       a. Loads the training and test datasets.
+       b. Loads the final model from the specified result folder.
+       c. Fits the model using the specified bandwidth selection method.
+       d. Computes the log-likelihood, Structural Hamming Distance (SHD), Hamming distance,
+          and Hamming type distance between the final model and the ground truth model.
+       e. Prints the mean log-likelihood, Hamming distance, SHD, and Hamming type distance
+          for the current patience value.
+
+    Raises:
+    ValueError: If an invalid bandwidth selection method is provided.
+    """
     truth_ll = np.empty((util.NUM_SIMULATIONS,))
 
     ll = np.empty((util.NUM_SIMULATIONS,))

@@ -16,6 +16,22 @@ patience = util.PATIENCE
 
 
 def run_hc_hspbn_hckde(idx_dataset, i):
+    """
+    Runs the Hill Climbing algorithm with HSPBN and HCKDE on a synthetic dataset.
+
+    Parameters:
+    idx_dataset (int): Index of the synthetic dataset to be used.
+    i (int): Index of the specific instance of the dataset.
+
+    This function performs the following steps:
+    1. Initializes the Greedy Hill Climbing algorithm and the operator pool.
+    2. Reads and preprocesses the dataset.
+    3. Sets up the validated likelihood for model evaluation.
+    4. Iterates over different patience values to perform model estimation.
+    5. Saves the resulting models and computation time.
+
+    The results are saved in a folder structure based on the dataset index, instance index, and patience value.
+    """
     hc = pbn.GreedyHillClimbing()
     pool = pbn.OperatorPool([pbn.ArcOperatorSet(), pbn.ChangeNodeTypeSet()])
 
