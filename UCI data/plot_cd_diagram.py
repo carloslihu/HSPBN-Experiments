@@ -175,7 +175,7 @@ def graph_ranks(
 
         """
         if not len(lr):
-            yield ()
+            raise ValueError("mxrange needs at least one parameter")
         else:
             # it can work with single numbers
             index = lr[0]
