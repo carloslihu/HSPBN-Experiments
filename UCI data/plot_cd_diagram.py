@@ -252,7 +252,7 @@ def graph_ranks(
                         return False
                 return True
 
-            namesNotSig = [(names[i], names[j]) for (i, j) in notSig]
+            # namesNotSig = [(names[i], names[j]) for (i, j) in notSig]
             longest = [(i, j) for i, j in notSig if no_longer((i, j), notSig)]
 
             return longest
