@@ -270,7 +270,7 @@ def graph_ranks(
 
     fig = plt.figure(figsize=(width, height))
     fig.set_facecolor("white")
-    ax = fig.add_axes([0, 0, 1, 1])  # reverse y axis
+    ax = fig.add_axes((0.0, 0.0, 1.0, 1.0))  # reverse y axis
     ax.set_axis_off()
 
     hf = 1.0 / height  # height factor
@@ -301,7 +301,7 @@ def graph_ranks(
     bigtick = 0.1
     smalltick = 0.05
 
-    tick = None
+    tick = smalltick
     for a in list(np.arange(lowv, highv, 0.5)) + [highv]:
         tick = smalltick
         if a == int(a):
