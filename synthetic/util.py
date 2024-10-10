@@ -6,6 +6,7 @@ INSTANCES = [200, 2000, 10000]
 SEED = 0
 PATIENCE = [0, 15]
 
+
 def shd(estimated, true):
     assert set(estimated.nodes()) == set(true.nodes())
     shd_value = 0
@@ -26,6 +27,7 @@ def shd(estimated, true):
 
     return shd_value
 
+
 def hamming(estimated, true):
     assert set(estimated.nodes()) == set(true.nodes())
     hamming_value = 0
@@ -44,6 +46,7 @@ def hamming(estimated, true):
             hamming_value += 1
 
     return hamming_value
+
 
 def hamming_type(estimated, true):
     assert set(estimated.nodes()) == set(true.nodes())

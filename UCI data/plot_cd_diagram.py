@@ -2,6 +2,7 @@ import math
 import numpy as np
 import adjusted_pvalues
 
+
 # From Orange 3: https://docs.biolab.si//3/data-mining-library/_modules/Orange/evaluation/scoring.html#compute_CD
 def compute_CD(avranks, n, alpha="0.05", test="nemenyi"):
     """
@@ -11,27 +12,100 @@ def compute_CD(avranks, n, alpha="0.05", test="nemenyi"):
     for Nemenyi two tailed test or "bonferroni-dunn" for Bonferroni-Dunn test.
     """
     k = len(avranks)
-    d = {("nemenyi", "0.05"): [0, 0, 1.959964, 2.343701, 2.569032, 2.727774,
-                               2.849705, 2.94832, 3.030879, 3.101730, 3.163684,
-                               3.218654, 3.268004, 3.312739, 3.353618, 3.39123,
-                               3.426041, 3.458425, 3.488685, 3.517073,
-                               3.543799],
-         ("nemenyi", "0.1"): [0, 0, 1.644854, 2.052293, 2.291341, 2.459516,
-                              2.588521, 2.692732, 2.779884, 2.854606, 2.919889,
-                              2.977768, 3.029694, 3.076733, 3.119693, 3.159199,
-                              3.195743, 3.229723, 3.261461, 3.291224, 3.319233],
-         ("bonferroni-dunn", "0.05"): [0, 0, 1.960, 2.241, 2.394, 2.498, 2.576,
-                                       2.638, 2.690, 2.724, 2.773],
-         ("bonferroni-dunn", "0.1"): [0, 0, 1.645, 1.960, 2.128, 2.241, 2.326,
-                                      2.394, 2.450, 2.498, 2.539]}
+    d = {
+        ("nemenyi", "0.05"): [
+            0,
+            0,
+            1.959964,
+            2.343701,
+            2.569032,
+            2.727774,
+            2.849705,
+            2.94832,
+            3.030879,
+            3.101730,
+            3.163684,
+            3.218654,
+            3.268004,
+            3.312739,
+            3.353618,
+            3.39123,
+            3.426041,
+            3.458425,
+            3.488685,
+            3.517073,
+            3.543799,
+        ],
+        ("nemenyi", "0.1"): [
+            0,
+            0,
+            1.644854,
+            2.052293,
+            2.291341,
+            2.459516,
+            2.588521,
+            2.692732,
+            2.779884,
+            2.854606,
+            2.919889,
+            2.977768,
+            3.029694,
+            3.076733,
+            3.119693,
+            3.159199,
+            3.195743,
+            3.229723,
+            3.261461,
+            3.291224,
+            3.319233,
+        ],
+        ("bonferroni-dunn", "0.05"): [
+            0,
+            0,
+            1.960,
+            2.241,
+            2.394,
+            2.498,
+            2.576,
+            2.638,
+            2.690,
+            2.724,
+            2.773,
+        ],
+        ("bonferroni-dunn", "0.1"): [
+            0,
+            0,
+            1.645,
+            1.960,
+            2.128,
+            2.241,
+            2.326,
+            2.394,
+            2.450,
+            2.498,
+            2.539,
+        ],
+    }
     q = d[(test, alpha)]
     cd = q[k] * (k * (k + 1) / (6.0 * n)) ** 0.5
     return cd
 
 
 # Adapted from Orange3 https://docs.biolab.si//3/data-mining-library/_modules/Orange/evaluation/scoring.html#graph_ranks
-def graph_ranks(avranks, names, N, posthoc_method="cd", lowv=None, highv=None,
-                width=6, textspace=1, reverse=False, filename=None, alpha=0.05, **kwargs):
+def graph_ranks(
+    avranks,
+    names,
+    N,
+    posthoc_method="cd",
+    lowv=None,
+    highv=None,
+    width=6,
+    textspace=1,
+    reverse=False,
+    filename=None,
+    alpha=0.05,
+    **kwargs
+):
     """
     Draws a CD graph, which is used to display  the differences in methods'
     performance. See Janez Demsar, Statistical Comparisons of Classifiers over
@@ -145,6 +219,7 @@ def graph_ranks(avranks, names, N, posthoc_method="cd", lowv=None, highv=None,
     distanceh = 0.25
 
     if posthoc_method is not None:
+
         def get_lines(sums, posthoc_method=posthoc_method):
             if posthoc_method == "cd":
                 hsd = compute_CD(avranks, N, alpha=str(alpha), test="nemenyi")
@@ -152,8 +227,7 @@ def graph_ranks(avranks, names, N, posthoc_method="cd", lowv=None, highv=None,
                 lsums = len(sums)
                 allpairs = [(i, j) for i, j in mxrange([[lsums], [lsums]]) if j > i]
                 # remove not significant
-                notSig = [(i, j) for i, j in allpairs
-                          if abs(sums[i] - sums[j]) <= hsd]
+                notSig = [(i, j) for i, j in allpairs if abs(sums[i] - sums[j]) <= hsd]
 
             elif posthoc_method == "holm":
                 apv = adjusted_pvalues.holm(ssums, N, np.arange(k))
@@ -164,8 +238,10 @@ def graph_ranks(avranks, names, N, posthoc_method="cd", lowv=None, highv=None,
                 notSig = sorted([(i, j) for (p, (i, j)) in apv if p > alpha])
 
             else:
-                raise ValueError("Wrong posthoc method. Only Nemenyi (\"cd\"), Holm (\"holm\") and "
-                                 "Bergmann-Hommel (\"bergmann\") posthoc methods are implemented")
+                raise ValueError(
+                    'Wrong posthoc method. Only Nemenyi ("cd"), Holm ("holm") and '
+                    'Bergmann-Hommel ("bergmann") posthoc methods are implemented'
+                )
 
             # keep only longest
             def no_longer(ij_tuple, notSig):
@@ -192,12 +268,12 @@ def graph_ranks(avranks, names, N, posthoc_method="cd", lowv=None, highv=None,
     height = cline + ((k + 1) / 2) * 0.2 + minnotsignificant
 
     fig = plt.figure(figsize=(width, height))
-    fig.set_facecolor('white')
+    fig.set_facecolor("white")
     ax = fig.add_axes([0, 0, 1, 1])  # reverse y axis
     ax.set_axis_off()
 
-    hf = 1. / height  # height factor
-    wf = 1. / width
+    hf = 1.0 / height  # height factor
+    wf = 1.0 / width
 
     def hfl(l):
         return [a * hf for a in l]
@@ -205,13 +281,12 @@ def graph_ranks(avranks, names, N, posthoc_method="cd", lowv=None, highv=None,
     def wfl(l):
         return [a * wf for a in l]
 
-
     # Upper left corner is (0,0).
     ax.plot([0, 1], [0, 1], c="w")
     ax.set_xlim(0, 1)
     ax.set_ylim(1, 0)
 
-    def line(l, color='k', **kwargs):
+    def line(l, color="k", **kwargs):
         """
         Input is a list of pairs of points.
         """
@@ -230,32 +305,36 @@ def graph_ranks(avranks, names, N, posthoc_method="cd", lowv=None, highv=None,
         tick = smalltick
         if a == int(a):
             tick = bigtick
-        line([(rankpos(a), cline - tick / 2),
-              (rankpos(a), cline)],
-             linewidth=0.7)
+        line([(rankpos(a), cline - tick / 2), (rankpos(a), cline)], linewidth=0.7)
 
     for a in range(lowv, highv + 1):
-        text(rankpos(a), cline - tick / 2 - 0.05, str(a),
-             ha="center", va="bottom")
+        text(rankpos(a), cline - tick / 2 - 0.05, str(a), ha="center", va="bottom")
 
     k = len(ssums)
 
     for i in range(math.ceil(k / 2)):
         chei = cline + minnotsignificant + i * 0.2
-        line([(rankpos(ssums[i]), cline),
-              (rankpos(ssums[i]), chei),
-              (textspace - 0.1, chei)],
-             linewidth=0.7)
+        line(
+            [
+                (rankpos(ssums[i]), cline),
+                (rankpos(ssums[i]), chei),
+                (textspace - 0.1, chei),
+            ],
+            linewidth=0.7,
+        )
         text(textspace - 0.2, chei, nnames[i], ha="right", va="center")
 
     for i in range(math.ceil(k / 2), k):
         chei = cline + minnotsignificant + (k - i - 1) * 0.2
-        line([(rankpos(ssums[i]), cline),
-              (rankpos(ssums[i]), chei),
-              (textspace + scalewidth + 0.1, chei)],
-             linewidth=0.7)
-        text(textspace + scalewidth + 0.2, chei, nnames[i],
-             ha="left", va="center")
+        line(
+            [
+                (rankpos(ssums[i]), cline),
+                (rankpos(ssums[i]), chei),
+                (textspace + scalewidth + 0.1, chei),
+            ],
+            linewidth=0.7,
+        )
+        text(textspace + scalewidth + 0.2, chei, nnames[i], ha="left", va="center")
 
     if posthoc_method is not None:
         # upper scale
@@ -267,22 +346,27 @@ def graph_ranks(avranks, names, N, posthoc_method="cd", lowv=None, highv=None,
                 begin, end = rankpos(highv), rankpos(highv - cd)
 
             line([(begin, distanceh), (end, distanceh)], linewidth=0.7)
-            line([(begin, distanceh + bigtick / 2),
-                  (begin, distanceh - bigtick / 2)],
-                 linewidth=0.7)
-            line([(end, distanceh + bigtick / 2),
-                  (end, distanceh - bigtick / 2)],
-                 linewidth=0.7)
-            text((begin + end) / 2, distanceh - 0.05, "CD",
-                 ha="center", va="bottom")
+            line(
+                [(begin, distanceh + bigtick / 2), (begin, distanceh - bigtick / 2)],
+                linewidth=0.7,
+            )
+            line(
+                [(end, distanceh + bigtick / 2), (end, distanceh - bigtick / 2)],
+                linewidth=0.7,
+            )
+            text((begin + end) / 2, distanceh - 0.05, "CD", ha="center", va="bottom")
 
         # no-significance lines
         def draw_lines(lines, side=0.05, height=0.1):
             start = cline + 0.2
             for l, r in lines:
-                line([(rankpos(ssums[l]) - side, start),
-                      (rankpos(ssums[r]) + side, start)],
-                     linewidth=3)
+                line(
+                    [
+                        (rankpos(ssums[l]) - side, start),
+                        (rankpos(ssums[r]) + side, start),
+                    ],
+                    linewidth=3,
+                )
                 start += height
 
         draw_lines(lines)

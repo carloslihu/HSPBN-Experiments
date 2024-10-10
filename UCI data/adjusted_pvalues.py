@@ -4,10 +4,12 @@ from itertools import chain, combinations
 import numpy as np
 import sys
 
+
 def non_empty_powerset(iterable):
     "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
     s = list(iterable)
-    return chain.from_iterable(combinations(s, r) for r in range(1, len(s)+1))
+    return chain.from_iterable(combinations(s, r) for r in range(1, len(s) + 1))
+
 
 def nth(l, n):
     """
@@ -15,18 +17,19 @@ def nth(l, n):
     """
     return [a[n] for a in l]
 
+
 def holm(avgranks, N, names):
     p_values = pvalues(avgranks, N)
     k = len(avgranks)
-    m = k*(k-1) / 2
+    m = k * (k - 1) / 2
 
     apv = []
 
     pv_list = nth(p_values, 0)
     for i, (_, (alg1, alg2)) in enumerate(p_values):
         v = m * pv_list[0]
-        for j in range(1, i+1):
-            v = max(v, (m - j)*pv_list[j])
+        for j in range(1, i + 1):
+            v = max(v, (m - j) * pv_list[j])
 
         apv.append((min(v, 1), (alg1, alg2)))
 
@@ -34,13 +37,14 @@ def holm(avgranks, N, names):
     apv_names = [(p, (names[alg1], names[alg2])) for (p, (alg1, alg2)) in mon_apv]
     return apv_names
 
+
 def bh_exhaustivesets(classifiers):
     e = set()
     k = len(classifiers)
 
     i_full = set()
-    for i in range(k-1):
-        for j in range(i+1, k):
+    for i in range(k - 1):
+        for j in range(i + 1, k):
             i_full.add((classifiers[i], classifiers[j]))
 
     if not i_full:
@@ -67,11 +71,13 @@ def bh_exhaustivesets(classifiers):
         e.remove(frozenset())
     return frozenset(e)
 
+
 def min_pvalue_set(exhaustive_set, pvalues_dict):
     m = sys.float_info.max
     for h in exhaustive_set:
         m = min(m, pvalues_dict[h])
     return m
+
 
 def correct_monotocity(p_values):
     new_pvalues = p_values.copy()
@@ -79,9 +85,10 @@ def correct_monotocity(p_values):
 
     for i, (_, h) in enumerate(p_values[1:]):
         i = i + 1
-        new_pvalues[i] = (array_pvalues[:i+1].max(), h)
+        new_pvalues[i] = (array_pvalues[: i + 1].max(), h)
 
     return new_pvalues
+
 
 def bergmann_hommel(avgranks, N, names):
     p_values = pvalues(avgranks, N)
@@ -95,8 +102,7 @@ def bergmann_hommel(avgranks, N, names):
         v = sys.float_info.min
         for ex_set in exhaustive_sets:
             if hypot in ex_set:
-                v = max(v, len(ex_set)*
-                        min_pvalue_set(ex_set, pvalues_dict))
+                v = max(v, len(ex_set) * min_pvalue_set(ex_set, pvalues_dict))
 
         apv.append((min(v, 1), hypot))
 
@@ -104,16 +110,19 @@ def bergmann_hommel(avgranks, N, names):
     apv_names = [(p, (names[alg1], names[alg2])) for (p, (alg1, alg2)) in mon_apv]
     return apv_names
 
+
 def pvalues(avgranks, N):
     k = len(avgranks)
 
     z_values = {}
     p_values = []
-    for i in range(k-1):
-        for j in range(i+1, k):
-            z_values[(i,j)] = abs((avgranks[i] - avgranks[j]) / (math.sqrt(k*(k+1)/(6*N))))
+    for i in range(k - 1):
+        for j in range(i + 1, k):
+            z_values[(i, j)] = abs(
+                (avgranks[i] - avgranks[j]) / (math.sqrt(k * (k + 1) / (6 * N)))
+            )
 
-            p_value = (1 - norm.cdf(z_values[(i,j)]))*2
+            p_value = (1 - norm.cdf(z_values[(i, j)])) * 2
             p_values.append((p_value, (i, j)))
 
     sort_pvalues = sorted(p_values)
