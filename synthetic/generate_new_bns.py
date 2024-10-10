@@ -1,11 +1,14 @@
-import pybnesian as pbn
-import util
-import pandas as pd
-import pyarrow as pa
-import numpy as np
-import scipy.special
 import itertools
 import pickle
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import pyarrow as pa
+import scipy.special
+import util
+
+import pybnesian as pbn
 
 PROB_DISCRETE_DISCRETE = 0.25
 PROB_DISCRETE_CONTINUOUS = 0.25
@@ -620,7 +623,8 @@ class ProbabilisticModel:
 
 
 if __name__ == "__main__":
-
+    ground_truth_models_path = Path("ground_truth_models")
+    ground_truth_models_path.mkdir(parents=True, exist_ok=True)
     for i in range(util.NUM_SIMULATIONS):
         bb = ProbabilisticModel.generate_new_model(seed=i)
-        bb.save("ground_truth_models/model_" + str(i) + ".pickle")
+        bb.save(ground_truth_models_path / f"model_{i}.pickle")
