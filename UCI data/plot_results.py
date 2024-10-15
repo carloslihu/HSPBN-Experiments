@@ -135,13 +135,13 @@ def plot_cd_diagrams(rename_dict):
     #     "plots/Holm.tex", standalone=True, axis_width="14cm", axis_height="5cm"
     # )
     # TODO: Check why it takes so much time to run
-    plot_cd_diagram.graph_ranks(
-        avgranks,
-        names,
-        df_algorithms.shape[0],
-        posthoc_method="bergmann",
-        filename=PLOT_PATH / "Bergmann.png",
-    )
+    # plot_cd_diagram.graph_ranks(
+    #     avgranks,
+    #     names,
+    #     df_algorithms.shape[0],
+    #     posthoc_method="bergmann",
+    #     filename=PLOT_PATH / "Bergmann.png",
+    # )
     # tikzplotlib.save(
     #     "plots/Bergmann.tex", standalone=True, axis_width="14cm", axis_height="5cm"
     # )
@@ -162,7 +162,7 @@ if __name__ == "__main__":
         "HSPBN_HCKDE_5": r"HSPBN-HCKDE $\lambda=5$",
         "HSPBN_HCKDE_15": r"HSPBN-HCKDE $\lambda=15$",
     }
-    # save_summary_results()
+    save_summary_results()
     print(f"Results saved in {RESULT_SUMMARY_FILE}")
     plot_cd_diagrams(rename_dict)
     print("CD diagrams saved in plots/")
