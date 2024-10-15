@@ -114,7 +114,7 @@ def graph_ranks(
 
     Needs matplotlib to work.
 
-    The image is ploted on `plt` imported using
+    The image is plotted on `plt` imported using
     `import matplotlib.pyplot as plt`.
 
     Args:
@@ -145,7 +145,7 @@ def graph_ranks(
 
     def nth(l, n):
         """
-        Returns only nth elemnt in a list.
+        Returns only nth element in a list.
         """
         n = lloc(l, n)
         return [a[n] for a in l]
@@ -175,7 +175,7 @@ def graph_ranks(
 
         """
         if not len(lr):
-            raise ValueError("mxrange needs at least one parameter")
+            yield ()
         else:
             # it can work with single numbers
             index = lr[0]
