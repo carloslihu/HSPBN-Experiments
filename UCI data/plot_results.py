@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import adult
 import australian_statlog
 import cover_type
@@ -10,6 +12,10 @@ import thyroid_hypothyroid
 import thyroid_sick
 import tikzplotlib
 import util
+
+RESULT_SUMMARY_FILE = "data/result_summary.csv"
+PLOT_PATH = Path("plots/")
+PLOT_PATH.mkdir(exist_ok=True)
 
 
 def result_string(df_name, df):
@@ -91,12 +97,13 @@ def save_summary_results():
     sick = thyroid_sick.preprocess_dataframe(sick)
     string_file += result_string("Thyroid-sick", sick)
 
-    with open("data/result_summary.csv", "w") as f:
+    with open(RESULT_SUMMARY_FILE, "w") as f:
         f.write(string_file)
 
 
 def plot_cd_diagrams(rename_dict):
-    df_algorithms = pd.read_csv("data/result_summary.csv")
+
+    df_algorithms = pd.read_csv(RESULT_SUMMARY_FILE)
     df_algorithms = df_algorithms.set_index("Dataset")
 
     rank = df_algorithms.rank(axis=1, ascending=False)
@@ -106,29 +113,38 @@ def plot_cd_diagrams(rename_dict):
     names = [rename_dict[s] for s in names]
 
     plot_cd_diagram.graph_ranks(
-        avgranks, names, df_algorithms.shape[0], posthoc_method="cd"
+        avgranks,
+        names,
+        df_algorithms.shape[0],
+        posthoc_method="cd",
+        filename=PLOT_PATH / "CD.png",
     )
-    tikzplotlib.save(
-        "plots/Nemenyi.tex", standalone=True, axis_width="14cm", axis_height="5cm"
-    )
-
-    plot_cd_diagram.graph_ranks(
-        avgranks, names, df_algorithms.shape[0], posthoc_method="holm"
-    )
-    tikzplotlib.save(
-        "plots/Holm.tex", standalone=True, axis_width="14cm", axis_height="5cm"
-    )
+    # TODO: Debug why the tikzplotlib is not being saved
+    # tikzplotlib.save(
+    #     "plots/Nemenyi.tex", standalone=True, axis_width="14cm", axis_height="5cm"
+    # )
 
     plot_cd_diagram.graph_ranks(
         avgranks,
         names,
         df_algorithms.shape[0],
-        textspace=1,
+        posthoc_method="holm",
+        filename=PLOT_PATH / "Holm.png",
+    )
+    # tikzplotlib.save(
+    #     "plots/Holm.tex", standalone=True, axis_width="14cm", axis_height="5cm"
+    # )
+    # TODO: Check why it takes so much time to run
+    plot_cd_diagram.graph_ranks(
+        avgranks,
+        names,
+        df_algorithms.shape[0],
         posthoc_method="bergmann",
+        filename=PLOT_PATH / "Bergmann.png",
     )
-    tikzplotlib.save(
-        "plots/Bergmann.tex", standalone=True, axis_width="14cm", axis_height="5cm"
-    )
+    # tikzplotlib.save(
+    #     "plots/Bergmann.tex", standalone=True, axis_width="14cm", axis_height="5cm"
+    # )
 
 
 if __name__ == "__main__":
@@ -146,6 +162,7 @@ if __name__ == "__main__":
         "HSPBN_HCKDE_5": r"HSPBN-HCKDE $\lambda=5$",
         "HSPBN_HCKDE_15": r"HSPBN-HCKDE $\lambda=15$",
     }
-
-    save_summary_results()
+    # save_summary_results()
+    print(f"Results saved in {RESULT_SUMMARY_FILE}")
     plot_cd_diagrams(rename_dict)
+    print("CD diagrams saved in plots/")

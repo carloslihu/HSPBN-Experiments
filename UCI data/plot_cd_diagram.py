@@ -5,14 +5,14 @@ import numpy as np
 
 
 # From Orange 3: https://docs.biolab.si//3/data-mining-library/_modules/Orange/evaluation/scoring.html#compute_CD
-def compute_CD(avranks, n, alpha="0.05", test="nemenyi"):
+def compute_CD(avgranks, n, alpha="0.05", test="nemenyi"):
     """
     Returns critical difference for Nemenyi or Bonferroni-Dunn test
     according to given alpha (either alpha="0.05" or alpha="0.1") for average
     ranks and number of tested datasets N. Test can be either "nemenyi" for
     for Nemenyi two tailed test or "bonferroni-dunn" for Bonferroni-Dunn test.
     """
-    k = len(avranks)
+    k = len(avgranks)
     d = {
         ("nemenyi", "0.05"): [
             0,
@@ -94,7 +94,7 @@ def compute_CD(avranks, n, alpha="0.05", test="nemenyi"):
 
 # Adapted from Orange3 https://docs.biolab.si//3/data-mining-library/_modules/Orange/evaluation/scoring.html#graph_ranks
 def graph_ranks(
-    avranks,
+    avgranks,
     names,
     N,
     posthoc_method="cd",
@@ -118,7 +118,7 @@ def graph_ranks(
     `import matplotlib.pyplot as plt`.
 
     Args:
-        avranks (list of float): average ranks of methods.
+        avgranks (list of float): average ranks of methods.
         names (list of str): names of methods.
         cd (float): Critical difference used for statistically significance of
             difference between methods.
@@ -189,7 +189,7 @@ def graph_ranks(
         canvas = FigureCanvasAgg(fig)
         canvas.print_figure(*args, **kwargs)
 
-    sums = avranks
+    sums = avgranks
 
     tempsort = sorted([(a, i) for i, a in enumerate(sums)], reverse=reverse)
     ssums = nth(tempsort, 0)
@@ -199,7 +199,7 @@ def graph_ranks(
     if lowv is None:
         lowv = min(1, int(math.floor(min(ssums))))
     if highv is None:
-        highv = max(len(avranks), int(math.ceil(max(ssums))))
+        highv = max(len(avgranks), int(math.ceil(max(ssums))))
 
     cline = 0.4
 
@@ -223,7 +223,7 @@ def graph_ranks(
 
         def get_lines(sums, posthoc_method=posthoc_method):
             if posthoc_method == "cd":
-                hsd = compute_CD(avranks, N, alpha=str(alpha), test="nemenyi")
+                hsd = compute_CD(avgranks, N, alpha=str(alpha), test="nemenyi")
                 # get all pairs
                 lsums = len(sums)
                 allpairs = [(i, j) for i, j in mxrange([[lsums], [lsums]]) if j > i]
@@ -340,7 +340,7 @@ def graph_ranks(
     if posthoc_method is not None:
         # upper scale
         if posthoc_method == "cd":
-            cd = compute_CD(avranks, N, alpha=str(alpha), test="nemenyi")
+            cd = compute_CD(avgranks, N, alpha=str(alpha), test="nemenyi")
             if not reverse:
                 begin, end = rankpos(lowv), rankpos(lowv + cd)
             else:
