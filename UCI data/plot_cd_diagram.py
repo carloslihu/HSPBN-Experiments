@@ -226,7 +226,11 @@ def graph_ranks(
                 hsd = compute_CD(avgranks, N, alpha=str(alpha), test="nemenyi")
                 # get all pairs
                 lsums = len(sums)
-                allpairs = [(i, j) for i, j in mxrange([[lsums], [lsums]]) if j > i]
+                allpairs = [
+                    (i, j)
+                    for i, j in mxrange([[lsums], [lsums]])  # type: ignore
+                    if j > i
+                ]
                 # remove not significant
                 notSig = [(i, j) for i, j in allpairs if abs(sums[i] - sums[j]) <= hsd]
 
